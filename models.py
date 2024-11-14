@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 from functools import partial
-from torch.hub import load_state_dict_from_url
 import timm.models.swin_transformer as swin
 from timm.models.helpers import load_state_dict
 
@@ -22,12 +21,29 @@ class ArkSwinTransformer(swin.SwinTransformer):
                 )
             else:
                 self.projector = nn.Linear(encoder_features, self.num_features)
-        
+        else:
+            # If projector_features is None, use self.num_features as is
+            encoder_features = self.num_features
+
+        # Modify the model to include average pooling after the last feature map
+        self.avgpool = nn.AdaptiveAvgPool1d(1)
+
         # Multi-task heads
         self.omni_heads = nn.ModuleList([
             nn.Linear(self.num_features, num_classes) if num_classes > 0 else nn.Identity()
             for num_classes in num_classes_list
         ])
+
+    def forward_features(self, x):
+        x = self.patch_embed(x)
+        x = self.pos_drop(x)
+        for layer in self.layers:
+            x = layer(x)
+        x = self.norm(x)  # [B, L, C]
+        x = x.transpose(1, 2)  # [B, C, L]
+        x = self.avgpool(x)  # [B, C, 1]
+        x = x.squeeze(-1)    # [B, C]
+        return x
 
     def forward(self, x, head_n=None):
         x = self.forward_features(x)
@@ -59,7 +75,8 @@ def build_omni_model_from_checkpoint(args, num_classes_list, key='student'):
                 window_size=7,
                 embed_dim=128,
                 depths=(2, 2, 18, 2),
-                num_heads=(4, 8, 16, 32)
+                num_heads=(4, 8, 16, 32),
+                num_classes=0  # Set to 0 since we'll add our own head
             )
         else:
             print("--- PEAC only configured for swin_base ---")
