@@ -14,10 +14,10 @@ import cv2
 from skimage import transform, io, img_as_float, exposure
 from albumentations import (
     Compose, HorizontalFlip, CLAHE, HueSaturationValue,
-    RandomBrightness, RandomBrightnessContrast, RandomGamma,OneOf,
-    ToFloat, ShiftScaleRotate,GridDistortion, ElasticTransform, JpegCompression, HueSaturationValue,
-    RGBShift, RandomBrightness, RandomContrast, Blur, MotionBlur, MedianBlur, GaussNoise,CenterCrop,
-    IAAAdditiveGaussianNoise,GaussNoise,OpticalDistortion,RandomSizedCrop, RandomResizedCrop, Normalize
+    RandomGamma,OneOf,
+    ToFloat, ShiftScaleRotate,GridDistortion, ElasticTransform, HueSaturationValue,
+    RGBShift, Blur, MotionBlur, MedianBlur, GaussNoise,CenterCrop,
+    GaussNoise,OpticalDistortion,RandomSizedCrop, RandomResizedCrop, Normalize
 )
 from albumentations.pytorch import ToTensorV2
 
