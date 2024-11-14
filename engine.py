@@ -68,10 +68,13 @@ def ark_engine(args, model_path, output_path, dataset_list, datasets_config, dat
     criterion = torch.nn.BCEWithLogitsLoss()
     if args.from_checkpoint:
         model = build_omni_model_from_checkpoint(args, num_classes_list, 'state_dict')
-        teacher = build_omni_model_from_checkpoint(args, num_classes_list, 'teacher')     
+        teacher = build_omni_model_from_checkpoint(args, num_classes_list, 'teacher')    
+    elif args.init == "peac":
+        model = build_omni_model_from_checkpoint(args, num_classes_list)
+        teacher = build_omni_model_from_checkpoint(args, num_classes_list)
     else:
-        model = build_omni_model(args, num_classes_list)
-        teacher = build_omni_model(args, num_classes_list)     
+        model = build_omni_model(args, num_classes_list) 
+        teacher = build_omni_model(args, num_classes_list) 
     print(model)
 
     if torch.cuda.device_count() > 1:
