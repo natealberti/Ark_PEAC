@@ -48,7 +48,7 @@ class ArkSwinTransformer(swin.SwinTransformer):
 def build_omni_model_from_checkpoint(args, num_classes_list, key='student'):
     # load PEAC pretrained weights (they have a special swin config)
     # NOTE: we discard the teacher from PEAC and initialize the teacher of Ark to random...
-    if args.init == "peac:"
+    if args.init == "peac":
         # PEAC uses swin_base
         if args.model_name == "swin_base":
             model = ArkSwinTransformer(
