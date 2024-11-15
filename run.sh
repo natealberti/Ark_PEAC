@@ -12,7 +12,8 @@ PRETRAINED_WEIGHTS_PETER=/scratch/pmousses/PEAC_weights
 WEIGHTS_FILE_NAME=last_swinb_patchsize32_imgsize448.pth
 PRETRAINED_WEIGHTS="$PRETRAINED_WEIGHTS_PETER/$WEIGHTS_FILE_NAME"
 
-OUTPUT_DIR=/scratch/nralbert/research/Ark/output/debug
+OUTPUT_DIR=/scratch/pmousses/research/Ark/output/debug
+mkdir -p $OUTPUT_DIR
 
 ~/.conda/envs/$ENVIRONMENT/bin/python main_ark.py --data_set ChestXray14	\
 --opt adamw --lr 0.0005 --warmup-epochs 20     	\
