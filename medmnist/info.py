@@ -4,11 +4,13 @@ __version__ = "3.0.2"
 import os
 from os.path import expanduser
 import warnings
+from getpass import getuser
 
 
 def get_default_root():
     # home = expanduser("~")
-    home = '/scratch/pmousses'
+    # home = '/scratch/pmousses'
+    home = f'/scratch/{getuser()}'
     dirpath = os.path.join(home, ".medmnist")
 
     try:
