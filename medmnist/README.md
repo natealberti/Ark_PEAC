@@ -1,0 +1,1 @@
+Code in this subdirectory is obtained from https://github.com/MedMNIST/MedMNIST

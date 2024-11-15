@@ -8,4 +8,3 @@ albumentations
 PyYAML
 tqdm
 timm == 0.5.4
-medmnist
