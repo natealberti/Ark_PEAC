@@ -555,9 +555,7 @@ class MedMNIST224(Dataset):
 		return len(self.dataset)
 	
 	def __getitem__(self, index):
-		imagePath = self.img_list[index]
-		imageData = Image.open(imagePath).convert('RGB')
-		imageLabel = torch.FloatTensor(self.img_label[index])     
+		imageData, imageLabel = self.dataset[index]  
 
 		if self.augment != None: 
 			student_img, teacher_img = self.augment(imageData), self.augment(imageData)   
