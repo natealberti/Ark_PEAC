@@ -14,7 +14,7 @@ import cv2
 from skimage import transform, io, img_as_float, exposure
 from albumentations import (
     Compose, HorizontalFlip, CLAHE, HueSaturationValue,
-    RandomGamma,OneOf,
+    RandomBrightnessContrast,RandomGamma,OneOf,
     ToFloat, ShiftScaleRotate,GridDistortion, ElasticTransform, HueSaturationValue,
     RGBShift, Blur, MotionBlur, MedianBlur, GaussNoise,CenterCrop,
     GaussNoise,OpticalDistortion,RandomSizedCrop, RandomResizedCrop, Normalize
