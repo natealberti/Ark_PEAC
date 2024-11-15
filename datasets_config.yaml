@@ -57,7 +57,7 @@ ChestMNIST:
   task_type: multi-label classification
 
 OctMNIST:
-  data_dir: chestmnist
+  data_dir: octmnist
   train_list: train
   val_list: val
   test_list: test
