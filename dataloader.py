@@ -21,6 +21,8 @@ from albumentations import (
 )
 from albumentations.pytorch import ToTensorV2
 
+import medmnist
+
 def build_transform_classification(normalize, crop_size=224, resize=256, mode="train", test_augment=True):
     transformations_list = []
 
@@ -516,6 +518,86 @@ class MIMIC(Dataset):
   def __len__(self):
 
     return len(self.img_list)
+  
+class MedMNIST224(Dataset):
+	def __init__(self, 
+			images_path, # data_flag in medmnist, name used for Ark consistency
+			file_path, # split in medmnist, name used for Ark consistency
+			augment, annotation_percent=100, # Other Ark params
+			download=True, read_from_disk=False # MedMNIST params
+		):
+		self.data_flag = images_path
+		self.split = file_path
+		self.augment = augment
+		self.annotation_percent = annotation_percent
+		self.download = download
+		self.read_from_disk = 'r' if read_from_disk else None
+		if self.annotation_percent < 100: print("Annotation percent is not supported for MedMNIST dataset")
+
+		self.size=224
+		self.info = medmnist.INFO[self.data_flag]
+		self.task = self.info['task']
+		self.n_channels = self.info['n_channels']
+		self.num_classes = len(self.info['label'])
+		self.id2label_dict = self.info['label']
+		self.label2id_dict = {v: k for k, v in self.info['label'].items()}
+		self.DataClass = getattr(medmnist, self.info['python_class'])
+		self.dataset = self.DataClass(
+			split=self.split,
+			download=self.download,
+			size=self.size,
+			as_rgb=True,
+			mmap_mode=self.read_from_disk
+		)
+	
+	def __len__(self):
+		return len(self.dataset)
+	
+	def __getitem__(self, index):
+		imagePath = self.img_list[index]
+		imageData = Image.open(imagePath).convert('RGB')
+		imageLabel = torch.FloatTensor(self.img_label[index])     
+
+		if self.augment != None: 
+			student_img, teacher_img = self.augment(imageData), self.augment(imageData)   
+		else:
+			imageData = (np.array(imageData)).astype('uint8')
+			augmented = self.train_augment(image = imageData, mask = imageData)
+			student_img = augmented['image']
+			teacher_img = augmented['mask']
+			student_img=np.array(student_img) / 255.
+			teacher_img=np.array(teacher_img) / 255.
+			
+			mean, std = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
+			student_img = (student_img-mean)/std
+			teacher_img = (teacher_img-mean)/std
+			student_img = student_img.transpose(2, 0, 1).astype('float32')
+			teacher_img = teacher_img.transpose(2, 0, 1).astype('float32')
+		
+		return student_img, teacher_img, imageLabel
+	
+	def montage(self, length=1):
+		return self.dataset.montage(length=length)
+	
+	def id2label_at_index(self, label_id):
+		return self.id2label_dict[str(label_id)]
+	
+	def label2id_at_index(self, label):
+		return int(self.label2id_dict[label])
+
+	def decode_labels(self, encoded_vector):
+		labels = []
+		for i, val in enumerate(encoded_vector):
+			if val == 1:
+				labels.append(self.id2label_at_index(i))
+		return labels
+	
+	def encode_labels(self, labels):
+		encoded = torch.zeros(self.num_classes)
+		for label in labels:
+			encoded[self.label2id_at_index(label)] = 1
+		return encoded
+
 
 dict_dataloarder = {
     "ChestXray14": ChestXray14,
@@ -524,4 +606,7 @@ dict_dataloarder = {
     "VinDrCXR": VinDrCXR,
     "RSNAPneumonia": RSNAPneumonia,
     "MIMIC": MIMIC,
+    "ChestMNIST": MedMNIST224,
+    "OctMNIST": MedMNIST224,
+    "PneumoniaMNIST": MedMNIST224,
 }
