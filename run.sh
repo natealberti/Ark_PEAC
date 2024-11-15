@@ -15,7 +15,7 @@ PRETRAINED_WEIGHTS="$PRETRAINED_WEIGHTS_PETER/$WEIGHTS_FILE_NAME"
 OUTPUT_DIR=/scratch/pmousses/research/Ark/output/debug
 mkdir -p $OUTPUT_DIR
 
-~/.conda/envs/$ENVIRONMENT/bin/python main_ark.py --data_set ChestXray14	\
+~/.conda/envs/$ENVIRONMENT/bin/python main_ark.py --data_set ChestMNIST	\
 --opt adamw --lr 0.0005 --warmup-epochs 20     	\
 --batch_size 128 --model swin_base --init peac  \
 --pretrain_epochs 150  --test_epoch 5	\
