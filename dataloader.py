@@ -21,8 +21,7 @@ from albumentations import (
 )
 from albumentations.pytorch import ToTensorV2
 
-from . import medmnist
-# import medmnist
+import medmnist
 
 def build_transform_classification(normalize, crop_size=224, resize=256, mode="train", test_augment=True):
     transformations_list = []
