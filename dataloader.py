@@ -530,6 +530,7 @@ class MedMNIST224(Dataset):
 		self.data_flag = images_path
 		self.split = file_path
 		self.augment = augment
+		self.train_augment = build_ts_transformations()
 		self.annotation_percent = annotation_percent
 		self.download = download
 		self.read_from_disk = 'r' if read_from_disk else None
