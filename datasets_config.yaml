@@ -47,3 +47,27 @@ MIMIC:
   diseases: ['No Finding', 'Enlarged Cardiomediastinum', 'Cardiomegaly', 'Lung Opacity', 'Lung Lesion', 'Edema', 'Consolidation', 'Pneumonia', 'Atelectasis', 'Pneumothorax', 'Pleural Effusion', 'Pleural Other', 'Fracture', 'Support Devices']
   test_diseases_name: ['Atelectasis', 'Cardiomegaly', 'Consolidation', 'Edema', 'Pleural Effusion']
   task_type: multi-label classification
+
+ChestMNIST:
+  data_dir: chestmnist
+  train_list: train
+  val_list: val
+  test_list: test
+  diseases: ['atelectasis', 'cardiomegaly', 'effusion', 'infiltration', 'mass', 'nodule', 'pneumonia', 'pneumothorax', 'consolidation', 'edema', 'emphysema', 'fibrosis', 'pleural', 'hernia']
+  task_type: multi-label classification
+
+OctMNIST:
+  data_dir: chestmnist
+  train_list: train
+  val_list: val
+  test_list: test
+  diseases: ['choroidal neovascularization', 'diabetic macular edema', 'drusen', 'normal']
+  task_type: multi-class classification
+
+PneumoniaMNIST:
+  data_dir: pneumoniamnist
+  train_list: train
+  val_list: val
+  test_list: test
+  diseases: ['normal', 'pneumonia']
+  task_type: multi-class classification
