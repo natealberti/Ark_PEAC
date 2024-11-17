@@ -5,6 +5,8 @@
 #SBATCH --mem=64G		# Memory in GiB
 #SBATCH -G a100:1       # number of gpus
 #SBATCH -t 1-00:00:00   # time in d-hh:mm:ss
+#SBATCH --account=class_ImageSummerFall2024
+
 #SBATCH -p general      # partition 
 #SBATCH -q public       # QOS
 #SBATCH -o slurm.%j.out # file to save job's STDOUT (%j = JobId)
