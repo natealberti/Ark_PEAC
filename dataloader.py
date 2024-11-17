@@ -320,7 +320,7 @@ class VinDrCXR(Dataset):
       line = fr.readline().strip()
       while line:
         lineItems = line.split()
-        imagePath = os.path.join(images_path, lineItems[0]+".jpeg")
+        imagePath = os.path.join(images_path, lineItems[0]+".jpg")
         imageLabel = lineItems[1:]
         imageLabel = [int(i) for i in imageLabel]
         self.img_list.append(imagePath)
