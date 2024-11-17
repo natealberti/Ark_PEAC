@@ -7,7 +7,7 @@ ChestXray14:
   task_type: multi-label classification
 
 CheXpert: 
-  data_dir: <PATH_TO_DATASET>/
+  data_dir: /data/jliang12/mhossei2/Dataset/
   train_list: dataset/CheXpert-v1.0_train.csv
   val_list: dataset/CheXpert-v1.0_valid.csv
   test_list: dataset/CheXpert-v1.0_valid.csv
@@ -16,7 +16,7 @@ CheXpert:
   task_type: multi-label classification
 
 Shenzhen: 
-  data_dir: <PATH_TO_DATASET>/ShenzhenHospitalXray/ChinaSet_AllFiles/CXR_png/
+  data_dir: /data/jliang12/mhossei2/Dataset/ShenzhenHospitalXray/ChinaSet_AllFiles/CXR_png/
   train_list: dataset/ShenzenCXR_train_data.txt
   val_list: dataset/ShenzenCXR_valid_data.txt
   test_list: dataset/ShenzenCXR_test_data.txt
@@ -24,7 +24,7 @@ Shenzhen:
   task_type: binary classification
 
 VinDrCXR: 
-  data_dir: <PATH_TO_DATASET>/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  data_dir: /data/jliang12/shared/dataset/VinBigData/
   train_list: dataset/VinDrCXR_train_pe_global_one.txt
   val_list: dataset/VinDrCXR_test_pe_global_one.txt
   test_list: dataset/VinDrCXR_test_pe_global_one.txt
@@ -123,11 +123,8 @@ PneumoniaMNIST:
   train_list: train
   val_list: val
   test_list: test
-  diseases: [
-    'normal', 
-    'pneumonia'
-  ]
-  task_type: multi-class classification
+  diseases: ['pneumonia']
+  task_type: binary classification
 
 RetinaMNIST:
   data_dir: retinamnist
@@ -148,11 +145,8 @@ BreastMNIST:
   train_list: train
   val_list: val
   test_list: test
-  diseases: [
-    'malignant', 
-    'normal, benign'
-  ]
-  task_type: binary-class classification
+  diseases: ['malignant']
+  task_type: binary classification
 
 BloodMNIST:
   data_dir: bloodmnist
