@@ -15,14 +15,13 @@
 #SBATCH --mail-user="%u@asu.edu"
 #SBATCH --export=NONE   # Purge the job-submitting shell environment
 
-ENV_INSTALLED=${1:-true}
-ENVIRONMENT=${2:-"Ark_PEAC"}
+ENVIRONMENT_NAME=$(grep -E '^name:' environment.yml | awk '{print $2}')
 module load mamba/latest
-if [ "$ENV_INSTALLED" = false ]; then
+if mamba info --envs | grep -qE "^\s*$ENVIRONMENT_NAME\s"; then :
+else
 	mamba env create -f environment.yml
-	ENVIRONMENT=Ark_PEAC
 fi
-source activate $ENVIRONMENT
+source activate $ENVIRONMENT_NAME
 
 # PRETRAINED_WEIGHTS=/scratch/nralbert/research/checkpoints/swin_base_patch4_window7_224.pth             ### Swin-B ImageNet-1K weights
 PRETRAINED_WEIGHTS_NATE=/scratch/nralbert/CSE507/PEAC_backup/weights
@@ -35,9 +34,11 @@ PRETRAINED_WEIGHTS="$PRETRAINED_WEIGHTS_PETER/$WEIGHTS_FILE_NAME"
 OUTPUT_DIR=/scratch/$USER/research/Ark/output/debug
 mkdir -p $OUTPUT_DIR
 
-~/.conda/envs/$ENVIRONMENT/bin/python main_ark.py --data_set ChestMNIST	\
---opt adamw --lr 0.0005 --warmup-epochs 20     	\
---batch_size 128 --model swin_base --init peac  \
---pretrain_epochs 150  --test_epoch 5	\
---pretrained_weights $PRETRAINED_WEIGHTS	\
---momentum_teacher 0.9  --projector_features 1376
+/home/$USER/.conda/envs/$ENVIRONMENT_NAME/bin/python \
+	main_ark.py \
+		--data_set ChestMNIST	\
+		--opt adamw --lr 0.0005 --warmup-epochs 20     	\
+		--batch_size 128 --model swin_base --init peac  \
+		--pretrain_epochs 150  --test_epoch 5	\
+		--pretrained_weights $PRETRAINED_WEIGHTS	\
+		--momentum_teacher 0.9  --projector_features 1376
