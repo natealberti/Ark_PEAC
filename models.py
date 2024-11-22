@@ -11,6 +11,7 @@ class ArkSwinTransformer(swin.SwinTransformer):
         
         self.projector = None
         if projector_features:
+            print(f"[DEBUG]: Projector features = {projector_features}")
             encoder_features = self.num_features
             self.num_features = projector_features
             if use_mlp:
@@ -23,6 +24,7 @@ class ArkSwinTransformer(swin.SwinTransformer):
                 self.projector = nn.Linear(encoder_features, self.num_features)
         else:
             # If projector_features is None, use self.num_features as is
+            print("[DEBUG]: Projector features = NONE")
             encoder_features = self.num_features
 
         # Modify the model to include average pooling after the last feature map
