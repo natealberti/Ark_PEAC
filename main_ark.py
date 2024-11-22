@@ -23,7 +23,7 @@ def get_args_parser():
                       callback=vararg_callback_int)
     parser.add_option("--model", dest="model_name", help="vit_base|vit_small|swin_base|swin_tiny", default="vit_base", type="string")
     parser.add_option("--init", dest="init",
-                      help="Random| ImageNet_1k| ImageNet_21k| SAM| DeiT| BEiT| DINO| MoCo_V3| MoBY | MAE| SimMIM",
+                      help="Random| ImageNet_1k| ImageNet_21k| SAM| DeiT| BEiT| DINO| MoCo_V3| MoBY | MAE| SimMIM | peac | ark",
                       default="Random", type="string")
     parser.add_option("--pretrained_weights", dest="pretrained_weights", help="Path to the Pretrained model", default=None, type="string")
     parser.add_option("--from_checkpoint", dest="from_checkpoint", help="whether load pretrained weights from checkpoint", default=False, action="callback", callback=vararg_callback_bool)
@@ -43,7 +43,7 @@ def get_args_parser():
     parser.add_option("--pretrain_epochs", dest="pretrain_epochs", help="num of omni-pretraining epoches", default=10, type="int")
     parser.add_option("--test_epoch", dest="test_epoch", help="whether test after every epoch", default=1, type="int")                
     parser.add_option("--val_loss_metric", dest="val_loss_metric", help="which validation loss for early stop and model save (average | [dataset])", default="average", type="string")                  
-    parser.add_option("--projector_features", dest="projector_features", help="num of projector features", default=1376, type="int")
+    parser.add_option("--projector_features", dest="projector_features", help="num of projector features", default=None, type="int")
     parser.add_option("--use_mlp", dest="use_mlp", help="whether use mlp for projector", default=False, action="callback",
                       callback=vararg_callback_bool)
     # Optimizer parameters
@@ -81,7 +81,7 @@ def get_args_parser():
                         help='epochs to warmup LR, if scheduler supports')
     parser.add_option('--cooldown-epochs', type=int, default=10, metavar='N',
                         help='epochs to cooldown LR at min_lr, after cyclic schedule ends')
-    parser.add_option('--decay-rate', '--dr', type=float, default=0.5, metavar='RATE',
+    parser.add_option('--decay-rate', '--dr', type=float, default=None, metavar='RATE', # default=0.5
                         help='LR decay rate (default: 0.1)')
     parser.add_option('--patience-epochs', type=int, default=10, metavar='N',
                         help='patience epochs for Plateau LR scheduler (default: 10')
